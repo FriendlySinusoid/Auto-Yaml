@@ -1,3 +1,8 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SequenceWriter;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -6,9 +11,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -119,82 +123,31 @@ public class PathGenerator extends JFrame implements KeyListener, MouseListener 
 	}
 
 	private void saveMaptoYAML() throws IOException {
+		boolean isFileCreated = false;
 		Scanner fileScanner = new Scanner(new File("BaseFileHeading.txt"));
 
 		String userDirectory = System.getProperty("user.dir");
-		String fileNameBase = JOptionPane.showInputDialog("Enter File Name");
+		String fileName = JOptionPane.showInputDialog("Enter File Name") + ".yml";
 
-		if(fileNameBase != "" || fileNameBase != null) {
-			String fileName = fileNameBase + ".yml";
-
-			if (fileName != null && userDirectory != null) {
+		while (!isFileCreated){
+			if (fileName != "" || fileName != null) {
 				File PathYAML = new File(userDirectory + "/" + fileName);
-				BufferedWriter typewritter = new BufferedWriter(new FileWriter(PathYAML));
 				String cleanStringFINAL = new String();
 
-				String sectionHeader = new String();
-				int countBase = 0;
-				while (fileScanner.hasNext() && countBase != 2) {
-					if (countBase < 1) {
-						sectionHeader += fileScanner.nextLine() + "\n";
-					} else if (countBase == 1) {
-						sectionHeader += fileScanner.nextLine();
-					}
-					countBase++;
-				}
-				System.out.println(sectionHeader);
-				System.out.println();
+				YAMLFactory YAMLFactory = new YAMLFactory();
+				ObjectMapper mapper = new ObjectMapper(YAMLFactory);
+				ObjectNode root = (ObjectNode) mapper.readTree(cleanStringFINAL);
 
-				String commandIdOne = JOptionPane.showInputDialog("Enter Custom @id");
-				String commandIdTwo = JOptionPane.showInputDialog("Enter Another Custom @id");
+				/** MODIFY MODIFY MODIFY MODIFY MODIFY MODIFY MODIFY MODIFY */
 
-				if(commandIdOne != "" || commandIdOne != null) {
-					String wholeFile = new String();
-					while (fileScanner.hasNext()) {
-						wholeFile += fileScanner.nextLine();
-					}
-//			System.out.println(wholeFile);
-//			System.out.println();
+				FileOutputStream typewritter = new FileOutputStream(PathYAML);
+				SequenceWriter sw = mapper.writerWithDefaultPrettyPrinter().writeValues(typewritter);
+				sw.write(root);
 
-				int beginSub = wholeFile.indexOf("- org"), endSub = wholeFile.indexOf("ion:") + 4;
-					System.out.println();
 
-					System.out.println("Begin Substring: " + beginSub + " End Substring: " + endSub);
-					System.out.println();
-					String firstSegment = wholeFile.substring(beginSub, endSub);
-
-					String dirtyStringAddition = sectionHeader + "\n" + "\t" + "\t" + "\'@id\': " + commandIdOne + "\n" + "\t" + "\t" + "commandList:" + "\n" + "\t" + "\t" + "\t" + firstSegment + "" +
-							"\n" + "\t" + "\t" + "\t" + "\'@id\': " + commandIdTwo;
-					System.out.println(dirtyStringAddition);
-
-					String secondSegment = new String();
-					for (int i = 0; i < path.size(); i++) {
-						double angle = path.get(i)[2];
-						angle = ((angle * (180 / Math.PI)) + 180) % 360;
-						if (angle > 180) {
-							angle = angle - 360;
-						}
-						secondSegment += firstSegment + "\n                x: 1080" + "\n                y: 540"
-								+ "\n                theta: " + angle + "\n                deltaTime: 0.05" + "\n" + "\t" + "\t" + "\t";
-					}
-
-					cleanStringFINAL = dirtyStringAddition + secondSegment;
-
-					System.out.println();
-					System.out.println("Final YAML File: \n");
-					System.out.println("\n" + cleanStringFINAL);
-
-					typewritter.write(cleanStringFINAL);
-
-					typewritter.close();
-				} else {
-					JOptionPane.showMessageDialog(this, "Error | Unacceptable Id");    /** COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS */
-				}
 			} else {
-				JOptionPane.showMessageDialog(this, "Error | FileNotFoundException (Base FileHeading.txt)");    /** COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS */
+				JOptionPane.showMessageDialog(this, "Error | Unacceptable File Name");   /** COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS */
 			}
-		} else {
-			JOptionPane.showMessageDialog(this, "Error | Unacceptable File Name");   /** COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS */
 		}
 	}
 
