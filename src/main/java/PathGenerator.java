@@ -1,8 +1,3 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SequenceWriter;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -126,28 +120,36 @@ public class PathGenerator extends JFrame implements KeyListener, MouseListener 
 		boolean isFileCreated = false;
 		Scanner fileScanner = new Scanner(new File("BaseFileHeading.txt"));
 
-		String userDirectory = System.getProperty("user.dir");
-		String fileName = JOptionPane.showInputDialog("Enter File Name") + ".yml";
-
 		while (!isFileCreated){
-			if (fileName != "" || fileName != null) {
-				File PathYAML = new File(userDirectory + "/" + fileName);
-				String cleanStringFINAL = new String();
 
-				YAMLFactory YAMLFactory = new YAMLFactory();
-				ObjectMapper mapper = new ObjectMapper(YAMLFactory);
-				ObjectNode root = (ObjectNode) mapper.readTree(cleanStringFINAL);
+		final class YAML implements java.io.Serializable{
+			private String userDirectory = new String();
+			private String fileName = new String();
 
-				/** MODIFY MODIFY MODIFY MODIFY MODIFY MODIFY MODIFY MODIFY */
-
-				FileOutputStream typewritter = new FileOutputStream(PathYAML);
-				SequenceWriter sw = mapper.writerWithDefaultPrettyPrinter().writeValues(typewritter);
-				sw.write(root);
-
-
-			} else {
-				JOptionPane.showMessageDialog(this, "Error | Unacceptable File Name");   /** COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS COME BACK TO THIS */
+			public YAML(String userDirectory, String fileName){
+				this.userDirectory = userDirectory;
+				this.fileName = fileName;
 			}
+
+			public String getUserDirectory() {
+				return userDirectory;
+			}
+
+			public void setUserDirectory(String userDirectory) {
+				this.userDirectory = userDirectory;
+			}
+
+			public String getFileName() {
+				return fileName;
+			}
+
+			public void setFileName(String fileName) {
+				this.fileName = fileName;
+			}
+		}
+
+			YAML PathYAML = new YAML(System.getProperty("user.dir"), JOptionPane.showInputDialog("Enter File Name") + ".yml");
+
 		}
 	}
 
