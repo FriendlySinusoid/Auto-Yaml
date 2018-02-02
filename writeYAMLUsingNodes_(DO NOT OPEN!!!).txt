@@ -1,0 +1,30 @@
+	private void saveMaptoYAML() throws IOException {
+		boolean isFileCreated = false;
+		Scanner fileScanner = new Scanner(new File("BaseFileHeading.txt"));
+
+		String userDirectory = System.getProperty("user.dir");
+		String fileName = JOptionPane.showInputDialog("Enter File Name") + ".yml";
+
+		while (!isFileCreated){
+			if (fileName != "" || fileName != null) {
+				File PathYAML = new File(userDirectory + "/" + fileName);
+				String cleanStringFINAL = new String();
+
+				YAMLFactory YAMLFactory = new YAMLFactory();
+				ObjectMapper mapper = new ObjectMapper(YAMLFactory);
+				ObjectNode root = (ObjectNode) mapper.readTree(cleanStringFINAL);
+
+				/** MODIFY MODIFY MODIFY MODIFY MODIFY MODIFY MODIFY MODIFY */
+
+				System.out.println(root.toString());
+
+				FileOutputStream typewritter = new FileOutputStream(PathYAML);
+				SequenceWriter sw = mapper.writerWithDefaultPrettyPrinter().writeValues(typewritter);
+				sw.write(root);
+
+
+			} else {
+				JOptionPane.showMessageDialog(this, "Error | Unacceptable File Name");
+			}
+		}
+	}
