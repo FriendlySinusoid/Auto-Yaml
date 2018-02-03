@@ -7,6 +7,7 @@ plugins {
 group 'Auto-Yaml'
 version '1.0'
 
+
 repositories {
 	maven { url "https://plugins.gradle.org/m2/" }
 	maven { url 'https://jitpack.io' }
@@ -16,6 +17,7 @@ repositories {
 		compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.4'
 		compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.4'
 		compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.4'
+		compile 'com.github.blair-robot-project:test-bed:370abe17df'
 	}
 }
 

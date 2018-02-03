@@ -1,0 +1,23 @@
+autoStartupCommand: #right start, left switch
+    org.usfirst.frc.team449.robot.commands.general.GoToPositionSequence:
+        '@id': simpleSwitchStartRightLeftSwitch
+        poseEstimator:
+           org.usfirst.frc.team449.robot.other.UnidirectionalPoseEstimator:
+                poseEstimator
+        pathRequester:
+           org.usfirst.frc.team449.robot.components.PathRequester:
+                '@id': autoPath
+                address: 00000000000
+        subsystem:
+            org.usfirst.frc.team449.robot.drive.unidirectional.DriveUnidirectionalWithGyroShiftable:
+                drive
+        deltaTime: 0.050000
+        path:
+            - {1.450000, 14.850000, -52.495858}
+            - {8.700000, 24.700000, 0.000000}
+            - {14.300000, 24.650000, 95.013114}
+            - {14.050000, 20.650000, 105.945396}
+            - {18.100000, 22.550000, 114.145542}
+            - {17.350000, 18.800000, 108.434949}
+            - {26.750000, 24.150000, 82.694240}
+            - {26.850000, 21.850000, 93.366461}
